@@ -346,6 +346,10 @@ class OrchestratorClient:
                     self._handle_settings_push(msg)
                 elif mtype == "task_cancel":
                     self._handle_task_cancel()
+                elif mtype == "agent_restart":
+                    logger.info("Restart requested by orchestrator — shutting down for restart")
+                    import sys
+                    asyncio.get_event_loop().call_later(1.0, lambda: sys.exit(0))
                 elif mtype in ("agent_registered", "agent_offline", "broadcast",
                                "discovery_response", "error"):
                     logger.debug("← [%s] %s", mtype, json.dumps(msg.get("payload", {}))[:120])
